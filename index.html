@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="no-js" lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+  <meta name="description" content="Physical Animate powered by three.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/es-module-shims.min.js"></script>
+  <script type="importmap">
+    {
+      "imports":{
+        "three":"https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.148.0/examples/jsm/"
+      }
+    }
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Add your site or application content here -->
+<script type="module" src="js/main.js"></script>
+<script src="js/miscfunc.js"></script>
+<div id="container"></div>
+<div id="control-panel">
+  <label class="description" for="an_velocity">角速度:</label>
+  <input title="角速度" class="attr" type="text" id="an_velocity" value="10"/>
+  <br/>
+  <input title="开始/停止" class="attr" type="checkbox" id="is_running"/>
+  <label class="description" for="is_running">暂停</label>
+  <br/>
+  <button id="apply" onclick="ApplySettings()">应用</button>
+</div>
+</body>
+
+</html>
