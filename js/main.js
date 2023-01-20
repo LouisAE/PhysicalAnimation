@@ -40,7 +40,7 @@ scene.add(ring1);
 const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
-let t = 0, w1 = 10, w2 = 1, ani, running;
+let t = 0, w1 = 10, w2 = 1, ani, running = true;
 
 function ApplySettings() {
   w1 = $("#an_velocity").val();
@@ -49,7 +49,7 @@ function ApplySettings() {
     running = false;
   } else if (!running) {
     animate();
-
+    running = true;
   }
 }
 
