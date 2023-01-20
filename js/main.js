@@ -44,11 +44,12 @@ let t = 0, w1 = 10, w2 = 1, ani, running;
 
 function ApplySettings() {
   w1 = $("#an_velocity").val();
-  if ($("#is_running").prop("checked")) {
+  if ($("#pause").prop("checked")) {
     cancelAnimationFrame(ani);
     running = false;
   } else if (!running) {
     animate();
+
   }
 }
 
