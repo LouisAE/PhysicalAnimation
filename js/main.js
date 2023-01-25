@@ -25,7 +25,7 @@ const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
 
-let m = 100, theta = rad(30), len = 15, dt = 1 / 60, ani, running = true;
+let m = 1, theta = rad(30), len = 15, dt = 1 / 60, ani, running = true;
 
 
 let smallBall = DrawSphere(0.5, 0xff0000);
@@ -85,6 +85,30 @@ world.addBody(bodySmallBall);
 
 world.addConstraint(new CANNON.PointToPointConstraint(bodySmallBall, new CANNON.Vec3(0, 0, 0), bodyBigBall, new CANNON.Vec3(-len * Math.sin(theta), len * Math.cos(theta), 0)));
 
+function ApplySettings() {
+  if(!running) {
+    m = $("#mess").val();
+    theta = $("#theta").val();
+    len = $("#length").val();
+  }
+
+  if ($("#pause").prop("checked")) {
+    cancelAnimationFrame(ani);
+    running = false;
+  } else if (!running) {
+    animate();
+  }
+}
+
+function resetSettings(){
+  theta = 30;
+  bodyBigBall.position.set(len * Math.sin(theta), len - (len * Math.cos(theta)), 0);
+  bodyBigBall.velocity.set(0, 0, 0);
+  string0.position.copy(bigBall.position.clone().add(smallBall.position).multiplyScalar(0.5));
+}
+
+window.resetSettings = resetSettings;
+window.ApplySettings = ApplySettings;
 
 function animate() {
   ani = requestAnimationFrame(animate);

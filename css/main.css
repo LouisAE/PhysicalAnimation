@@ -261,3 +261,12 @@ textarea {
   }
 }
 
+
+.attr{
+  margin:3px;
+}
+
+#control-panel{
+  margin:10px;
+  background-color:#b9fff7;
+}

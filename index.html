@@ -29,13 +29,20 @@
 <script type="module" src="js/main.js"></script>
 <div id="container"></div>
 <div id="control-panel">
-  <label class="description" for="an_velocity">角速度:</label>
-  <input title="角速度" class="attr" type="text" id="an_velocity" value="10"/>
+  <label class="description" for="mess">质量:</label>
+  <input title="质量" class="attr" type="text" id="mess" value="1"/>
+  <br/>
+  <label class="description" for="length">绳长:</label>
+  <input title="绳长" class="attr" type="text" id="length" value="15"/>
+  <br/>
+  <label class="description" for="theta">初始角度:</label>
+  <input title="初始角度" class="attr" type="text" id="theta" value="30"/>
   <br/>
   <input title="开始/停止" class="attr" type="checkbox" id="pause"/>
   <label class="description" for="pause">暂停</label>
   <br/>
-  <button id="apply" onclick="ApplySettings()">应用</button>
+  <button id="apply" onclick="ApplySettings()">应用设置</button>
+  <button id="reset" onclick="resetSettings()">重置</button>
 </div>
 </body>
 
