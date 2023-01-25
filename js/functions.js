@@ -18,6 +18,16 @@ export function DrawBox(width, height, depth, color) {
   return new THREE.Mesh(geometry, material);
 }
 
+export function DrawCylinder(radius, height, color) {
+  const geometry = new THREE.CylinderGeometry(radius, radius, height);
+  const material = new THREE.MeshBasicMaterial({ color: color });
+  return new THREE.Mesh(geometry, material);
+}
+
+//化角度为弧度
+export function rad(deg) {
+  return deg * Math.PI / 180;
+}
 
 
 
