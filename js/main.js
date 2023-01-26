@@ -25,7 +25,7 @@ const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
 
-let m = 1, theta = rad(30), len = 15, dt = 1 / 60, ani, running = true;
+let m = 1, theta = rad(30), len = 15, dt = 1 / 60, ani, running = false;
 
 
 let smallBall = DrawSphere(0.5, 0xff0000);
@@ -86,18 +86,10 @@ world.addBody(bodySmallBall);
 world.addConstraint(new CANNON.PointToPointConstraint(bodySmallBall, new CANNON.Vec3(0, 0, 0), bodyBigBall, new CANNON.Vec3(-len * Math.sin(theta), len * Math.cos(theta), 0)));
 
 function ApplySettings() {
-  if(!running) {
     m = $("#mess").val();
     theta = $("#theta").val();
     len = $("#length").val();
-  }
-
-  if ($("#pause").prop("checked")) {
-    cancelAnimationFrame(ani);
-    running = false;
-  } else if (!running) {
-    animate();
-  }
+    renderer.render(scene, camera);
 }
 
 function resetSettings(){
@@ -107,8 +99,23 @@ function resetSettings(){
   string0.position.copy(bigBall.position.clone().add(smallBall.position).multiplyScalar(0.5));
 }
 
+function start_pause() {
+  if(running){
+    cancelAnimationFrame(ani);
+    running = false;
+  }else{
+    running = true;
+    $("#apply").attr("disabled","disabled");
+    $("#mess").attr("disabled","disabled");
+    $("#theta").attr("disabled","disabled");
+    $("#length").attr("disabled","disabled");
+    animate();
+  }
+}
+
 window.resetSettings = resetSettings;
 window.ApplySettings = ApplySettings;
+window.start_pause = start_pause;
 
 function animate() {
   ani = requestAnimationFrame(animate);
@@ -129,5 +136,4 @@ function animate() {
   controls.update();
 }
 
-animate();
-
+renderer.render(scene, camera);
