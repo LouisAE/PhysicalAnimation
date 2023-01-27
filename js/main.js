@@ -25,7 +25,7 @@ const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
 
-let m = 1, theta = rad(30), len = 15, dt = 1 / 60, ani, running = false;
+let m = 1, theta = rad(30), len0 = 15,len = len0, dt = 1 / 60, ani, running = false;
 
 
 let smallBall = DrawSphere(0.5, 0xff0000);
@@ -37,7 +37,7 @@ bigBall.position.y = len - (len * Math.cos(theta));
 scene.add(smallBall);
 scene.add(bigBall);
 
-let floor = DrawBox(50, 3, 2, 0xffffff);
+let floor = DrawBox(50, 3, 20, 0xffffff);
 floor.position.y = -30;
 scene.add(floor);
 
@@ -66,8 +66,8 @@ world.addBody(bodyBigBall);
 
 let bodyFloor = new CANNON.Body({
   mass: 0,
-  position: new CANNON.Vec3(0, -10, 0),
-  shape: new CANNON.Box(new CANNON.Vec3(25, 1.5, 1)),
+  position: new CANNON.Vec3(0, -30, 0),
+  shape: new CANNON.Box(new CANNON.Vec3(25, 1.5, 10)),
   material: new CANNON.Material({friction: 0})
 });
 floor.userData = bodyFloor;
@@ -83,38 +83,61 @@ let bodySmallBall = new CANNON.Body({
 smallBall.userData = bodySmallBall;
 world.addBody(bodySmallBall);
 
-world.addConstraint(new CANNON.PointToPointConstraint(bodySmallBall, new CANNON.Vec3(0, 0, 0), bodyBigBall, new CANNON.Vec3(-len * Math.sin(theta), len * Math.cos(theta), 0)));
+let  connect = new CANNON.DistanceConstraint(bodySmallBall,bodyBigBall,len);
+world.addConstraint(connect);
 
-function ApplySettings() {
-    m = $("#mess").val();
-    theta = $("#theta").val();
-    len = $("#length").val();
-    renderer.render(scene, camera);
-}
 
-function resetSettings(){
-  theta = 30;
+function resetStatus(){
+  if(running) {
+    start_pause();
+  }
+  $("#mess").removeAttr("disabled");
+  $("#theta").removeAttr("disabled");
+  $("#length").removeAttr("disabled");
+
+
+
+
+  theta = rad($("#theta").val());
+  len = Number($("#length").val());
+  m = Number($("#mess").val());
+
+  string0.scale.y = Number($("#length").val())/len0;
+  smallBall.position.y = len;
+  bodySmallBall.position.set(0, len, 0);
+
+  bigBall.position.copy(new THREE.Vector3(len * Math.sin(theta), len - (len * Math.cos(theta)), 0));
   bodyBigBall.position.set(len * Math.sin(theta), len - (len * Math.cos(theta)), 0);
   bodyBigBall.velocity.set(0, 0, 0);
+  bodyBigBall.angularVelocity.set(0, 0, 0);
+
   string0.position.copy(bigBall.position.clone().add(smallBall.position).multiplyScalar(0.5));
+  string0.rotation.z = theta;
+
+  world.removeConstraint(connect);
+  connect = new CANNON.DistanceConstraint(bodySmallBall,bodyBigBall,len);
+  world.addConstraint(connect);
+
+  renderer.render(scene, camera);
 }
 
 function start_pause() {
   if(running){
     cancelAnimationFrame(ani);
     running = false;
+    $("#pause").text("运行");
   }else{
     running = true;
     $("#apply").attr("disabled","disabled");
     $("#mess").attr("disabled","disabled");
     $("#theta").attr("disabled","disabled");
     $("#length").attr("disabled","disabled");
+    $("#pause").text("暂停");
     animate();
   }
 }
 
-window.resetSettings = resetSettings;
-window.ApplySettings = ApplySettings;
+window.resetStatus = resetStatus;
 window.start_pause = start_pause;
 
 function animate() {
