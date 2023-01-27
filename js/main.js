@@ -25,7 +25,7 @@ const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
 
-let m = 1, theta = rad(30), len0 = 15,len = len0, dt = 1 / 60, ani, running = false;
+let m = 1, theta = rad(30), len0 = 15,len = len0, dt = 1 / 60, running = false;
 
 
 let smallBall = DrawSphere(0.5, 0xff0000);
@@ -123,7 +123,6 @@ function resetStatus(){
 
 function start_pause() {
   if(running){
-    cancelAnimationFrame(ani);
     running = false;
     $("#pause").text("运行");
   }else{
@@ -141,22 +140,22 @@ window.resetStatus = resetStatus;
 window.start_pause = start_pause;
 
 function animate() {
-  ani = requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
   renderer.render(scene, camera);
-  world.step(dt);
 
-  for (let i in scene.children) {
-    if (scene.children[i].isMesh && scene.children[i].userData.position) {
-      scene.children[i].position.copy(scene.children[i].userData.position);
-      scene.children[i].quaternion.copy(scene.children[i].userData.quaternion);
+  if (running) {
+    world.step(dt);
+    for (let i in scene.children) {
+      if (scene.children[i].isMesh && scene.children[i].userData.position) {
+        scene.children[i].position.copy(scene.children[i].userData.position);
+        scene.children[i].quaternion.copy(scene.children[i].userData.quaternion);
+      }
     }
+    string0.position.copy(bigBall.position.clone().add(smallBall.position).multiplyScalar(0.5));
+    string0.rotation.z = theta;
+    theta = Math.atan2(bigBall.position.x, len - bigBall.position.y);
   }
-
-  string0.position.copy(bigBall.position.clone().add(smallBall.position).multiplyScalar(0.5));
-  string0.rotation.z = theta;
-
-  theta = Math.atan2(bigBall.position.x, len - bigBall.position.y);
   controls.update();
 }
 
-renderer.render(scene, camera);
+animate();
