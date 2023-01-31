@@ -12,11 +12,11 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowWidth*0.7, windowHeight * 0.7);//"图像"的长宽比
 $("#container").append(renderer.domElement);
 
-//透视型camera
+//正交相机
 let renderWidth = 60
 const camera = new THREE.OrthographicCamera(
-  -renderWidth, //视野角度
-  renderWidth,//"屏幕"的长宽比
+  -renderWidth,
+  renderWidth,
   renderWidth*windowHeight/windowWidth,
   -renderWidth*windowHeight/windowWidth,
   5,
@@ -145,7 +145,6 @@ function start_pause() {
     $("#length").attr("disabled","disabled");
     $("#gravity").attr("disabled","disabled");
     $("#pause").text("暂停");
-    animate();
   }
 }
 
