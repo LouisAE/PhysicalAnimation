@@ -4,16 +4,18 @@ import {OrbitControls} from "../controls/OrbitControls.js";
 import {drawSphere, rad, drawBox, drawCylinder} from "./functions.js";
 
 const scene = new THREE.Scene();
+let windowWidth = window.innerWidth,windowHeight = window.innerHeight;
 //scene.background = new THREE.Color( 0x0 );
+
 //渲染器
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth*0.7, window.innerHeight * 0.7);//"图像"的长宽比
+renderer.setSize(windowWidth*0.7, windowHeight * 0.7);//"图像"的长宽比
 $("#container").append(renderer.domElement);
 
 //透视型camera
 const camera = new THREE.PerspectiveCamera(
   100, //视野角度
-  window.innerWidth / (window.innerHeight * 0.7),//"屏幕"的长宽比
+  windowWidth / (windowHeight * 0.7),//"屏幕"的长宽比
   0.1,
   1000);
 camera.position.z = 35;
@@ -104,11 +106,12 @@ function resetStatus(){
   theta = rad(Number($("#theta").val()));
   m = Number($("#mess").val());
   len = Number($("#length").val());
+  world.gravity = new CANNON.Vec3(0,-Number($("#gravity").val()),0);
 
   $("#mess").removeAttr("disabled");
   $("#theta").removeAttr("disabled");
   $("#length").removeAttr("disabled");
-
+  $("#gravity").removeAttr("disabled");
   adjustParams();
 
   bodySmallBall.position.set(0, len, 0);
@@ -136,6 +139,7 @@ function start_pause() {
     $("#mess").attr("disabled","disabled");
     $("#theta").attr("disabled","disabled");
     $("#length").attr("disabled","disabled");
+    $("#gravity").attr("disabled","disabled");
     $("#pause").text("暂停");
     animate();
   }
