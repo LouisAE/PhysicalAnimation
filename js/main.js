@@ -13,12 +13,15 @@ renderer.setSize(windowWidth*0.7, windowHeight * 0.7);//"图像"的长宽比
 $("#container").append(renderer.domElement);
 
 //透视型camera
-const camera = new THREE.PerspectiveCamera(
-  100, //视野角度
-  windowWidth / (windowHeight * 0.7),//"屏幕"的长宽比
-  0.1,
-  1000);
-camera.position.z = 35;
+let renderWidth = 60
+const camera = new THREE.OrthographicCamera(
+  -renderWidth, //视野角度
+  renderWidth,//"屏幕"的长宽比
+  renderWidth*windowHeight/windowWidth,
+  -renderWidth*windowHeight/windowWidth,
+  5,
+  100);
+camera.position.z = 20;
 
 //轨道照相机,可以用鼠标调整视角
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -108,10 +111,7 @@ function resetStatus(){
   len = Number($("#length").val());
   world.gravity = new CANNON.Vec3(0,-Number($("#gravity").val()),0);
 
-  $("#mess").removeAttr("disabled");
-  $("#theta").removeAttr("disabled");
-  $("#length").removeAttr("disabled");
-  $("#gravity").removeAttr("disabled");
+
   adjustParams();
 
   bodySmallBall.position.set(0, len, 0);
@@ -133,6 +133,10 @@ function start_pause() {
   if(running){
     running = false;
     $("#pause").text("运行");
+    $("#mess").removeAttr("disabled");
+    $("#theta").removeAttr("disabled");
+    $("#length").removeAttr("disabled");
+    $("#gravity").removeAttr("disabled");
   }else{
     running = true;
     $("#apply").attr("disabled","disabled");
