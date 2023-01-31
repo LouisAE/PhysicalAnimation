@@ -266,7 +266,15 @@ textarea {
   margin:3px;
 }
 
+.description,.control{
+  margin-left:10px;
+}
+
+
 #control-panel{
   margin:10px;
+  padding:5px;
   background-color:#b9fff7;
+  border-style: solid;
+  border-color: black;
 }
